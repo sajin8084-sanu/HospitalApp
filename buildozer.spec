@@ -2,6 +2,7 @@
 title = HospitalApp
 package.name = hospitalapp
 package.domain = org.hospitalapp
+source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 requirements = python3,flask,jinja2,werkzeug,itsdangerous,click
