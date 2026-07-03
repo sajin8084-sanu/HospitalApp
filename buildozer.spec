@@ -10,3 +10,4 @@ android.archs = arm64-v8a
 android.api = 33
 android.ndk_api = 33
 android.sdk_build_tools = 33.0.0
+android.accept_sdk_license = True
