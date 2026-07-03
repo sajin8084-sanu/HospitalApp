@@ -22,12 +22,6 @@ jobs:
         sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev tk-dev libgdbm-compat-dev libreoffice-dev libmpdec-dev
         pip install --upgrade pip
         pip install cython virtualenv buildozer
-
-    - name: Generate Buildozer Spec
-      run: |
-        buildozer init
-        sed -i 's/# requirements = python3,kivy/requirements = python3,flask,jinja2,werkzeug,itsdangerous,click/g' buildozer.spec
-        sed -i 's/package.domain = org.test/package.domain = org.hospitalapp/g' buildozer.spec
-
+        
     - name: Build with Buildozer
       run: buildozer -v android debug
