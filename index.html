@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Hospital Dashboard</title>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">🏥 CareSync Hospital System</span>
+        </div>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card p-4 shadow-sm border-0">
+                    <h4 class="text-secondary mb-3">Add New Patient</h4>
+                    <form method="POST">
+                        <div class="mb-3"><input type="text" name="name" class="form-control" placeholder="Patient's Full Name" required></div>
+                        <div class="mb-3"><input type="number" name="age" class="form-control" placeholder="Age" required></div>
+                        <div class="mb-3">
+                            <select name="gender" class="form-select">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3"><input type="text" name="phone" class="form-control" placeholder="Mobile Number" required></div>
+                        <button type="submit" class="btn btn-primary w-100">Register Patient</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card p-4 shadow-sm border-0">
+                    <h4 class="text-secondary mb-3">Registered Records</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr><th>ID</th><th>Name</th><th>Phone</th><th>Action</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for p in patients %}
+                                <tr>
+                                    <td>{{ p[0] }}</td>
+                                    <td><strong>{{ p[1] }}</strong></td>
+                                    <td>{{ p[4] }}</td>
+                                    <td><a href="/patient/{{ p[0] }}" class="btn btn-sm btn-info text-white px-3">View File</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

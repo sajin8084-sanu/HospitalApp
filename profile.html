@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Patient Individual File</title>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <a href="/" class="btn btn-outline-secondary mb-4">⬅ Back to Dashboard</a>
+        
+        <div class="card p-4 mb-4 border-0 shadow-sm bg-white">
+            <h3 class="text-primary">🗂️ Patient Profile File</h3>
+            <hr>
+            <div class="row text-secondary fs-5">
+                <div class="col-sm-4"><strong>Name:</strong> {{ patient[1] }}</div>
+                <div class="col-sm-4"><strong>Age/Gender:</strong> {{ patient[2] }} Yrs / {{ patient[3] }}</div>
+                <div class="col-sm-4"><strong>Phone:</strong> {{ patient[4] }}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 mb-4">
+                <div class="card p-4 shadow-sm border-0">
+                    <h5 class="text-success mb-3">New Entry / Prescription</h5>
+                    <form method="POST">
+                        <div class="mb-3"><input type="date" name="date" class="form-control" required></div>
+                        <div class="mb-3"><textarea name="symptoms" class="form-control" placeholder="Symptoms / Patient History" rows="2" required></textarea></div>
+                        <div class="mb-3"><textarea name="diagnosis" class="form-control" placeholder="Diagnosis (Optional)" rows="2"></textarea></div>
+                        <div class="mb-3"><textarea name="prescription" class="form-control" placeholder="Rx / Prescribed Medicine & Instructions" rows="4" required></textarea></div>
+                        <button type="submit" class="btn btn-success w-100">Save to History</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="card p-4 shadow-sm border-0">
+                    <h5 class="text-dark mb-3">Medical History Logs</h5>
+                    {% for h in history %}
+                    <div class="p-3 bg-light rounded mb-3 border-start border-primary border-4 position-relative">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-secondary">Date: {{ h[0] }}</span>
+                            <button onclick="printPrescription('{{ patient[1] }}', '{{ patient[2] }}', '{{ patient[3] }}', '{{ h[0] }}', '{{ h[1] }}', '{{ h[2] }}', '{{ h[3] }}')" class="btn btn-sm btn-outline-primary">
+                                🖨️ Print Slip
+                            </button>
+                        </div>
+                        <p class="mb-1"><strong>Symptoms:</strong> {{ h[1] }}</p>
+                        <p class="mb-1"><strong>Diagnosis:</strong> {{ h[2] if h[2] else 'N/A' }}</p>
+                        <p class="mb-0 text-success"><strong>Rx:</strong> {{ h[3] }}</p>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No medical history logged yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function printPrescription(name, age, gender, date, symptoms, diagnosis, prescription) {
+        var printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Prescription Slip</title>');
+        printWindow.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">');
+        printWindow.document.write('</head><body class="p-5">');
+        printWindow.document.write('<div class="text-center mb-4"><h2>🏥 CareSync Hospital System</h2><p class="text-muted">Patient Prescription Slip</p><hr></div>');
+        printWindow.document.write('<div class="row mb-4 fs-5"><div class="col-6"><strong>Patient Name:</strong> ' + name + '<br><strong>Age/Gender:</strong> ' + age + ' / ' + gender + '</div><div class="col-6 text-end"><strong>Date:</strong> ' + date + '</div></div>');
+        printWindow.document.write('<div class="mb-3"><h5>Chief Complaints / Symptoms:</h5><p class="p-2 bg-light rounded">' + symptoms + '</p></div>');
+        printWindow.document.write('<div class="mb-4"><h5>Diagnosis:</h5><p class="p-2 bg-light rounded">' + (diagnosis ? diagnosis : 'General Checkup') + '</p></div>');
+        printWindow.document.write('<div class="mb-5"><h3>Rx (Prescription / Advice):</h3><p class="fs-5 lh-lg" style="white-space: pre-line;">' + prescription + '</p></div>');
+        printWindow.document.write('<br><br><div class="row"><div class="col-6"><p class="text-muted">Software Generated</p></div><div class="col-6 text-end">___________________<br>Doctor / Authority</div></div>');
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        
+        printWindow.onload = function() {
+            printWindow.print();
+            printWindow.close();
+        };
+    }
+    </script>
+</body>
+</html>
